@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from passlib.context import CryptContext 
 from sqlalchemy.orm import Session
@@ -17,8 +17,15 @@ class User(BaseModel):
     password: str
     age: int
 
+class LoginUser(BaseModel):
+    email: str
+    password: str
+
 def hash_password(password: str):
     return pwd_context.hash(password)
+
+def verify_password(password: str, hashed_password: str):
+    return pwd_context.verify(password, hashed_password)
 
 def get_db():
     db = SessionLocal()
@@ -48,3 +55,27 @@ def register(user: User, db: Session = Depends(get_db)):
     return {
         "message" : "User Registered successfully"
     }
+@app.post("/login")
+def login(user: LoginUser, db: Session = Depends(get_db)):
+
+    db_user = db.query(UserDB).filter(
+        UserDB.email == user.email
+    ).first()
+
+    if not db_user:
+        raise HTTPException(
+            status_code = 404,
+            detail="User not found"
+        )
+    if not verify_password(
+        user.passowrd,
+        db_user.password
+    ):
+        raise HTTPException(
+            status_code = 401,
+            detail="Invalid Passowrd"
+        )
+    return {
+        "message": "Login Successful"
+    }
+    
