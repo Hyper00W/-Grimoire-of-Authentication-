@@ -45,7 +45,7 @@ def register(user: User, db: Session = Depends(get_db)):
     new_user = UserDB(
         username = user.username,
         email = user.email,
-        hashed_password = hashed_password,
+        password = hashed_password,
         age = user.age  
     )
 
@@ -68,7 +68,7 @@ def login(user: LoginUser, db: Session = Depends(get_db)):
             detail="User not found"
         )
     if not verify_password(
-        user.passowrd,
+        user.password,
         db_user.password
     ):
         raise HTTPException(
