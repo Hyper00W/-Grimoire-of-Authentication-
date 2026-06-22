@@ -15,7 +15,7 @@ This is **not** a production-ready system, but rather a **personal learning sanc
 - 🛡️ **Password Security** — Mastering hashing, salting, and cryptographic best practices
 - 🗄️ **Database Architecture** — Designing robust data models with SQLAlchemy and SQLite
 - ⚡ **FastAPI Framework** — Building lightning-fast async APIs with elegance
-- 📚 **RESTful Design Patterns** — Crafting clean, intuitive API endpoints
+- 📚 **RESTful Design Patterns** — Crafting clean, intuitive API endpoints.
 
 ---
 
